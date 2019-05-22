@@ -143,27 +143,6 @@ if __name__ == '__main__':
                 batch_x, batch_y = batch_x.cuda(), batch_y.cuda()
                 batch_x.to(device)
                 batch_y.to(device)
-            # if want to save the input and result image
-            # for j in range(0,len(batch_yx)):
-            #     for i in range(0,len(batch_yx[j])): # (3, 256,248) type:Tensor
-            #         by = (batch_yx[j][i]).numpy() # tensor to ndarray
-            #         by = by.transpose((1,2,0))
-            #         by_img = Image.fromarray((by*255.0).astype('uint8'))
-            #         if j == 0:
-            #             by_img.save('/mnt/lustre/sunshuyang/temp/im_q40'+str(i)+'.jpg')
-            #         elif j == 1:
-            #             by_img.save('/mnt/lustre/sunshuyang/temp/im_label'+str(i)+'.png')
-            # assert error
-            # model_output = model(batch_y).cpu().detach().numpy()
-            # batch_x_save = batch_x.cpu().detach().numpy()
-            # print(model_output.shape) # (7, 3, 256, 448)
-            # for i in range(0,model_output.shape[0]):
-            #     bxs = batch_x_save[i].transpose((1,2,0))
-            #     mo = model_output[i].transpose((1,2,0))
-            #     bxs_img = Image.fromarray((bxs*255.0).astype('uint8'))
-            #     mo_img = Image.fromarray((mo*255.0).astype('uint8'))
-            #     bxs_img.save('/mnt/lustre/sunshuyang/temp/im_input'+str(i)+'.png')
-            #     mo_img.save('/mnt/lustre/sunshuyang/temp/im_output'+str(i)+'.png')
 
             loss = criterion(model(batch_y), batch_x)
             loss_single_batch += loss.item()

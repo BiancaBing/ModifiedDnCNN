@@ -23,7 +23,7 @@ parser.add_argument('--QT_FACTOR', default=37, type=int, help='quantization fact
 parser.add_argument('--test_batchsize', default=8, type=int, help='training batches')
 parser.add_argument('--InputFolder', default='C:/Users/Administrator/Downloads/vimeo_part_crop2', type=str, help='inputfolder')
 parser.add_argument('--LabelFolder', default='C:/Users/Administrator/Downloads/vimeo_part_crop', type=str, help='LabelFolder')
-parser.add_argument('--model_dir', default='C:/Users/Administrator/PycharmProjects/ELEC5306_final/models/ModifiedDnCNN_q37/checkpoint_q37_ModifiedDnCNN_5nd_003.pth.tar', type=str, help='model path')
+parser.add_argument('--model_dir', default='C:/Users/Administrator/PycharmProjects/ELEC5306_final/models/ModifiedDnCNN_q37/checkpoint_q37_ModifiedDnCNN_5nd_016.pth.tar', type=str, help='model path')
 parser.add_argument('--Testlist', default='C:/Users/Administrator/PycharmProjects/ELEC5306_final/temp_sep_validationlist.txt', type=str,
                     help='testlist')  # 7824
 
@@ -83,6 +83,7 @@ if __name__ == '__main__':
         for index in range(index_start, index_end):
             batch_paths.append(full_test_image_list[index])
 
+        # Get the full size of images
         xs_test = generate_single_batch(train_input_dir=args.InputFolder, train_label_dir=args.LabelFolder,
                                         batch_paths=batch_paths, crop_flag=False)
 
@@ -100,7 +101,9 @@ if __name__ == '__main__':
                     batch_x, batch_y = batch_x.cuda(), batch_y.cuda()  # batch_x: label batch_y:input
                     batch_x.to(device)
                     batch_y.to(device)
+                # Denoise the input image
                 model_output = model(batch_y)
+                # Calculate the psnr
                 for s in range(0, model_output.shape[0]):
                     psnrs = calculate_psnr(batch_y[s], model_output[s], batch_x[s])
                     psnr_pre = psnrs[0]
